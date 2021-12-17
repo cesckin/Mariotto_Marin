@@ -14,7 +14,6 @@ public class ClientVotazioni implements Runnable {
         try {
             ClientVotazioni cr = new ClientVotazioni("127.0.0.1", 5000);
             Thread t_cr = new Thread(cr);
-
             t_cr.start();
             
         } catch (IOException e) {
