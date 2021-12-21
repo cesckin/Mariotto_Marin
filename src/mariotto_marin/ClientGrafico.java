@@ -122,6 +122,26 @@ public class ClientGrafico {
 		JLabel lblNewLabel = new JLabel("Tempo votazioni");
 		lblNewLabel.setBounds(201, 14, 92, 14);
 		frame.getContentPane().add(lblNewLabel);
+		
+		JButton btnMostraVotazioni = new JButton("Mostra votazioni");
+		btnMostraVotazioni.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					out.writeObject(Operazione.Operazione_t.Ricerca);
+					out.writeObject(new Candidato(null, null, null, 0));
+					ListaCandidati res = (ListaCandidati) in.readObject();
+					Iterator<Candidato> it = res.getPersone().iterator();
+					while (it.hasNext()) {
+						Candidato persona = it.next();
+						System.out.println(persona.toStringVotazioni());
+					}
+				} catch (IOException | ClassNotFoundException exc) {
+					exc.printStackTrace();
+				}
+			}
+		});
+		btnMostraVotazioni.setBounds(79, 225, 115, 23);
+		frame.getContentPane().add(btnMostraVotazioni);
 	}
 }
 

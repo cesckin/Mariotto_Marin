@@ -67,6 +67,11 @@ public class Candidato implements Serializable {
 
     @Override
     public String toString() {
+        return nome + " " + cognome + ", " + partito;
+    }
+    
+    public String toStringVotazioni() {
         return nome + " " + cognome + ", " + partito + " " + voti;
     }
+    
 }
