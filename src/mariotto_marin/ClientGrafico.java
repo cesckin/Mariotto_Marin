@@ -80,9 +80,11 @@ public class ClientGrafico {
 				Candidato persona = it.next();
 				comboBox.addItem(persona);
 			}
+			
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		
 		JButton btnVota = new JButton("Vota");
 		btnVota.setBounds(94, 191, 89, 23);
@@ -93,8 +95,9 @@ public class ClientGrafico {
 				try {
 					out.writeObject(Operazione.Operazione_t.Vota);
 					int cvotato = comboBox.getSelectedIndex();
-					System.out.println(cvotato);
-					out.writeObject(new Candidato(null, null, null, cvotato));
+					Candidato c = (Candidato) comboBox.getSelectedItem();
+					//System.out.println(c);
+					out.writeObject((Candidato) comboBox.getSelectedItem());
 					
 				} catch (IOException ex) {
 					ex.printStackTrace();
@@ -127,9 +130,14 @@ public class ClientGrafico {
 		btnMostraVotazioni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					out.flush();
 					out.writeObject(Operazione.Operazione_t.Ricerca);
 					out.writeObject(new Candidato(null, null, null, 0));
-					ListaCandidati res = (ListaCandidati) in.readObject();
+					Object o = in.readObject();
+					System.out.println(o instanceof ListaCandidati);
+					ListaCandidati res = (ListaCandidati) o;
+					System.out.println(res);
+					System.out.print(res.getPersone().get(0).getVoti());
 					Iterator<Candidato> it = res.getPersone().iterator();
 					while (it.hasNext()) {
 						Candidato persona = it.next();

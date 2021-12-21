@@ -20,12 +20,16 @@ public class ListaCandidati implements Serializable {
         Iterator<Candidato> it = persone.iterator();
         while (it.hasNext()) {
             Candidato persona = it.next();
-            if (persona.equalsOrNull(p))
-                r.add(persona);
+            //if (persona.equalsOrNull(p))
+            r.add(persona);
         }
         return r;
     }
 
+    public Candidato ricercaPerPosizione(int p) {
+        return persone.get(p);
+    }
+    
     public void modifica(Candidato vecchia, Candidato nuova) {
         for (int i = 0; i < persone.size(); i++) {
             if (persone.get(i).equals(vecchia)) {
@@ -46,5 +50,17 @@ public class ListaCandidati implements Serializable {
 
     public ArrayList<Candidato> getPersone() {
         return persone;
+    }
+    
+    public String toString() {
+    	 Iterator<Candidato> it = persone.iterator();
+    	 String elenco=new String();
+    	 while (it.hasNext()) {
+             Candidato persona = it.next();
+             //if (persona.equalsOrNull(p))
+             elenco=elenco+" "+persona.toString();
+         }
+    	 return elenco;
+    	 
     }
 }

@@ -44,9 +44,9 @@ public class ServerVotazioni implements Runnable {
 //        this.port = port;
         this.server = new ServerSocket(port);
         this.t_continue = true;
-        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Comunista", 0);
+        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Comunista", 5);
         listacandidati.add(c1);
-        Candidato c2=new Candidato("Davide", "Bortuo", "Partito Fascista", 0);
+        Candidato c2=new Candidato("Davide", "Bortuo", "Partito Fascista", 5);
         listacandidati.add(c2);
         Candidato c3=new Candidato("Chiave", "Americana", "Partito Liberalista", 0);
         listacandidati.add(c3);
@@ -54,8 +54,6 @@ public class ServerVotazioni implements Runnable {
         listacandidati.add(c4);
         Candidato c5=new Candidato("Ruota", "Scorto", "Partito Moderato", 0);
         listacandidati.add(c5);
-        
-        int votiC1=0, votiC2=0, votiC3=0, votiC4=0, votiC5=0;
     }
 
     @Override
@@ -79,21 +77,38 @@ public class ServerVotazioni implements Runnable {
                         switch (op) {
                             case Vota:
                             	//this.listacandidati.ricerca(c1);
-                            	
+                            	System.out.println("ciao");
                     	    	//Scanner scanner = new Scanner(System.in);
                     	        //int cvotato = scanner.nextInt();
-                            	ArrayList<Candidato> candidati = this.listacandidati.getPersone();   
-                            	Candidato c = null;
-                                 c = candidati.get(((Candidato) o).getVoti());
-                            	 c.addVoto();
+                            	//ArrayList<Candidato> candidati = this.listacandidati.getPersone();   
+                            	//Candidato c = null;
+                                Candidato a = ((Candidato) o);
+                                if(a.getNome().equals(listacandidati.getPersone().get(0).getNome())) {
+                                	System.out.println(listacandidati.getPersone().get(0));
+                                	listacandidati.getPersone().get(0).addVoto();
+                                }
+                                if(a.getNome().equals(listacandidati.getPersone().get(1).getNome()))
+                                	listacandidati.getPersone().get(1).addVoto();
+                                if(a.getNome().equals(listacandidati.getPersone().get(2).getNome()))
+                                	listacandidati.getPersone().get(2).addVoto();
+                                if(a.getNome().equals(listacandidati.getPersone().get(3).getNome()))
+                                	listacandidati.getPersone().get(3).addVoto();
+                                if(a.getNome().equals(listacandidati.getPersone().get(4).getNome()))
+                                	listacandidati.getPersone().get(4).addVoto();
+                               System.out.println(a); 	
+                               
+                                //out.writeObject(Operazione.Operazione_t.Op_ACK);
                                 break;
                             case Inserisci:
                             	//this.rubrica.elimina((Persona) o);
                             	//out.writeObject(Operazione.Operazione_t.Op_ACK);
                                 break;
                             case Ricerca:
-                                ListaCandidati res = this.listacandidati.ricerca((Candidato) o);
-                                out.writeObject(res);
+                            	out.flush();
+                            	System.out.println("ciccio"+listacandidati);
+                            	listacandidati.getPersone().get(1).setVoti(1000);
+                                out.writeObject(listacandidati);
+                                out.flush();
                                 break;
                         }
                     } else {

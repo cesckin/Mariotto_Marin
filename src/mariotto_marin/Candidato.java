@@ -7,7 +7,7 @@ public class Candidato implements Serializable {
     private String nome;
     private String cognome;
     private String partito;
-    private int voti=0;
+    private int voti;
 
 
     public Candidato(String nome, String cognome, String partito, int voti) {
@@ -67,7 +67,7 @@ public class Candidato implements Serializable {
 
     @Override
     public String toString() {
-        return nome + " " + cognome + ", " + partito;
+        return nome + " " + cognome + ", " + partito +" "+ voti;
     }
     
     public String toStringVotazioni() {
