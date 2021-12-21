@@ -31,8 +31,8 @@ public class ClientGrafico {
 				try {
 					ClientGrafico cg = new ClientGrafico("127.0.0.1", 5000);
 					cg.frame.setVisible(true);
-					Thread t_cg = new Thread((Runnable) cg);
-					t_cg.start();
+					//Thread t_cg = new Thread((Runnable) cg);
+					//t_cg.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -84,8 +84,6 @@ public class ClientGrafico {
 			e.printStackTrace();
 		}
 		
-		
-
 		JButton btnVota = new JButton("Vota");
 		btnVota.setBounds(94, 191, 89, 23);
 		btnVota.setVisible(true); //il marinozzo risolvò
@@ -95,6 +93,7 @@ public class ClientGrafico {
 				try {
 					out.writeObject(Operazione.Operazione_t.Vota);
 					int cvotato = comboBox.getSelectedIndex();
+					System.out.println(cvotato);
 					out.writeObject(new Candidato(null, null, null, cvotato));
 					
 				} catch (IOException ex) {
@@ -112,9 +111,17 @@ public class ClientGrafico {
 		lblTextCodiceUnivoco.setBounds(10, 34, 130, 14);
 		frame.getContentPane().add(lblTextCodiceUnivoco);
 
-		JLabel lblCodiceUnivoco = new JLabel("*****");
-		lblCodiceUnivoco.setBounds(136, 34, 47, 14);
+		JLabel lblCodiceUnivoco = new JLabel("----");
+		lblCodiceUnivoco.setBounds(146, 34, 47, 14);
 		frame.getContentPane().add(lblCodiceUnivoco);
+		
+		JLabel lblTempoVotazioni = new JLabel("--:--");
+		lblTempoVotazioni.setBounds(225, 34, 47, 14);
+		frame.getContentPane().add(lblTempoVotazioni);
+		
+		JLabel lblNewLabel = new JLabel("Tempo votazioni");
+		lblNewLabel.setBounds(201, 14, 92, 14);
+		frame.getContentPane().add(lblNewLabel);
 	}
 }
 
