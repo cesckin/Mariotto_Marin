@@ -44,9 +44,9 @@ public class ServerVotazioni implements Runnable {
 //        this.port = port;
         this.server = new ServerSocket(port);
         this.t_continue = true;
-        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Comunista", 5);
+        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Comunista", 0);
         listacandidati.add(c1);
-        Candidato c2=new Candidato("Davide", "Bortuo", "Partito Fascista", 5);
+        Candidato c2=new Candidato("Davide", "Bortuo", "Partito Fascista", 0);
         listacandidati.add(c2);
         Candidato c3=new Candidato("Chiave", "Americana", "Partito Liberalista", 0);
         listacandidati.add(c3);
@@ -105,8 +105,8 @@ public class ServerVotazioni implements Runnable {
                                 break;
                             case Ricerca:
                             	out.flush();
-                            	System.out.println("ciccio"+listacandidati);
-                            	listacandidati.getPersone().get(1).setVoti(1000);
+                            	System.out.println(listacandidati);
+                            	//listacandidati.getPersone().get(1).setVoti(1000);
                                 out.writeObject(listacandidati);
                                 out.flush();
                                 break;

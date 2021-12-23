@@ -19,6 +19,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import javax.swing.JPanel;
 
 public class ClientGrafico {
 
@@ -39,14 +40,15 @@ public class ClientGrafico {
 			}
 		});
 	}
-
+	
+	private RisultatiGrafico rg;
 	private JFrame frame;
 	private JComboBox comboBox;
 	private Socket connessione;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private int npersona = 0;
-
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -98,7 +100,7 @@ public class ClientGrafico {
 					Candidato c = (Candidato) comboBox.getSelectedItem();
 					//System.out.println(c);
 					out.writeObject((Candidato) comboBox.getSelectedItem());
-					
+					btnVota.setEnabled(false);
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
@@ -130,6 +132,16 @@ public class ClientGrafico {
 		btnMostraVotazioni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					connessione.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					
+					Socket con = new Socket("127.0.0.1",5000); 
+					out = new ObjectOutputStream(con.getOutputStream());
+					in = new ObjectInputStream(con.getInputStream());
 					out.flush();
 					out.writeObject(Operazione.Operazione_t.Ricerca);
 					out.writeObject(new Candidato(null, null, null, 0));
@@ -143,12 +155,13 @@ public class ClientGrafico {
 						Candidato persona = it.next();
 						System.out.println(persona.toStringVotazioni());
 					}
+					btnMostraVotazioni.setEnabled(false);
 				} catch (IOException | ClassNotFoundException exc) {
 					exc.printStackTrace();
 				}
 			}
 		});
-		btnMostraVotazioni.setBounds(79, 225, 115, 23);
+		btnMostraVotazioni.setBounds(10, 326, 109, 23);
 		frame.getContentPane().add(btnMostraVotazioni);
 	}
 }
