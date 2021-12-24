@@ -19,6 +19,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -48,6 +51,7 @@ public class ClientGrafico {
 	private JFrame frame;
 	private JComboBox comboBox;
 	private JTextPane textLog;
+	private JLabel lblTempoVotazioni;
 	private Socket connessione;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
@@ -133,7 +137,7 @@ public class ClientGrafico {
 		lblCodiceUnivoco.setBounds(170, 99, 116, 14);
 		frame.getContentPane().add(lblCodiceUnivoco);
 		
-		JLabel lblTempoVotazioni = new JLabel("--:--");
+		lblTempoVotazioni = new JLabel("--:--");
 		lblTempoVotazioni.setFont(new Font("Sitka Text", Font.BOLD, 14));
 		lblTempoVotazioni.setBounds(522, 35, 47, 14);
 		frame.getContentPane().add(lblTempoVotazioni);
@@ -171,10 +175,13 @@ public class ClientGrafico {
 					//System.out.println(res);
 					//System.out.print(res.getPersone().get(0).getVoti());
 					Iterator<Candidato> it = res.getPersone().iterator();
+					String votazioni = "";
 					while (it.hasNext()) {
 						Candidato persona = it.next();
-						textLog.setText(persona.toStringVotazioni());
+						System.out.println(persona.toStringVotazioni());
+						votazioni += persona.toStringVotazioni()+  " \n";
 					}
+					textLog.setText(votazioni);
 				} catch (IOException | ClassNotFoundException exc) {
 					exc.printStackTrace();
 				}
@@ -182,6 +189,29 @@ public class ClientGrafico {
 		});
 		btnStatoVotazioni.setBounds(290, 365, 101, 23);
 		frame.getContentPane().add(btnStatoVotazioni);
+		
+		int serverTime = 10;
+		
+		class Helper extends TimerTask{
+		    public int i = 0;
+		    public void run()
+		    {
+		    	if(i<=serverTime) {
+		    	int tempo = serverTime-i;
+		    	String time = Integer.toString(tempo);
+		    	lblTempoVotazioni.setText(time);
+		    	i++;
+		        //System.out.println("Timer ran " + ++i);
+		    	} else {
+		    		btnVota.setEnabled(false);
+		    		textLog.setText("Scaduto il tempo per le votazioni!");
+		    	}
+		    }
+		}
+		
+		Timer timer = new Timer();
+		TimerTask task = new Helper();
+		timer.schedule(task, 0, 1000);
 		
 		JLabel lblSfondo = new JLabel("");
 		lblSfondo.setIcon(new ImageIcon(ClientGrafico.class.getResource("/mariotto_marin/Zaiastan.jpg")));
