@@ -69,6 +69,7 @@ public class ClientGrafico {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
+		/*
 		try {
 			int codice = 0;
 			this.out.writeObject(Operazione.Operazione_t.Codice);
@@ -77,7 +78,7 @@ public class ClientGrafico {
 		} catch (IOException exce) {
 			exce.printStackTrace();
 		}
-		
+		*/
 		comboBox = new JComboBox();
 		comboBox.setBounds(10, 194, 255, 31);
 		frame.getContentPane().add(comboBox);
