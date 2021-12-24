@@ -56,6 +56,7 @@ public class ClientGrafico {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private int npersona = 0;
+	public String votazioni = "";
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -98,6 +99,7 @@ public class ClientGrafico {
 		
 		
 		JButton btnVota = new JButton("Vota");
+		btnVota.setBackground(new Color(255, 215, 0));
 		btnVota.setBounds(90, 204, 89, 23);
 		btnVota.setVisible(true); 
 		frame.getContentPane().add(btnVota);
@@ -138,8 +140,8 @@ public class ClientGrafico {
 		frame.getContentPane().add(lblCodiceUnivoco);
 		
 		lblTempoVotazioni = new JLabel("--:--");
-		lblTempoVotazioni.setFont(new Font("Sitka Text", Font.BOLD, 14));
-		lblTempoVotazioni.setBounds(522, 35, 47, 14);
+		lblTempoVotazioni.setFont(new Font("Sitka Text", Font.BOLD, 18));
+		lblTempoVotazioni.setBounds(539, 44, 47, 14);
 		frame.getContentPane().add(lblTempoVotazioni);
 		
 		JLabel lblNewLabel = new JLabel("Tempo rimanente");
@@ -159,6 +161,7 @@ public class ClientGrafico {
 		frame.getContentPane().add(textLog);
 		
 		JButton btnStatoVotazioni = new JButton("Stato votazioni");
+		btnStatoVotazioni.setBackground(new Color(240, 128, 128));
 		btnStatoVotazioni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -175,21 +178,23 @@ public class ClientGrafico {
 					//System.out.println(res);
 					//System.out.print(res.getPersone().get(0).getVoti());
 					Iterator<Candidato> it = res.getPersone().iterator();
-					String votazioni = "";
+					
 					while (it.hasNext()) {
 						Candidato persona = it.next();
-						System.out.println(persona.toStringVotazioni());
+						
+						//System.out.println(persona.toStringVotazioni());
 						votazioni += persona.toStringVotazioni()+  " \n";
 					}
 					textLog.setText(votazioni);
 				} catch (IOException | ClassNotFoundException exc) {
 					exc.printStackTrace();
 				}
+				btnStatoVotazioni.setEnabled(false);
 			}
 		});
-		btnStatoVotazioni.setBounds(290, 365, 101, 23);
+		btnStatoVotazioni.setBounds(383, 281, 123, 23);
 		frame.getContentPane().add(btnStatoVotazioni);
-		
+
 		int serverTime = 10;
 		
 		class Helper extends TimerTask{
@@ -203,8 +208,33 @@ public class ClientGrafico {
 		    	i++;
 		        //System.out.println("Timer ran " + ++i);
 		    	} else {
+		    		//textLog.setText("Scaduto il tempo per le votazioni!");
+		    		try {
+						connessione.close();
+						Socket connessione = new Socket("127.0.0.1",50000); 
+						out = new ObjectOutputStream(connessione.getOutputStream());
+						in = new ObjectInputStream(connessione.getInputStream());
+						//out.flush();
+						out.writeObject(Operazione.Operazione_t.Ricerca);
+						out.writeObject(new Candidato(null, null, null, 0));
+						Object o = in.readObject();
+						//System.out.println(o instanceof ListaCandidati);
+						ListaCandidati res = (ListaCandidati) o;
+						//System.out.println(res);
+						//System.out.print(res.getPersone().get(0).getVoti());
+						Iterator<Candidato> it = res.getPersone().iterator();
+						
+						while (it.hasNext()) {
+							Candidato persona = it.next();
+							
+							//System.out.println(persona.toStringVotazioni());
+							votazioni += persona.toStringVotazioni()+  " \n";
+						}
+						textLog.setText(votazioni);
+					} catch (IOException | ClassNotFoundException exc) {
+						exc.printStackTrace();
+					}
 		    		btnVota.setEnabled(false);
-		    		textLog.setText("Scaduto il tempo per le votazioni!");
 		    	}
 		    }
 		}
