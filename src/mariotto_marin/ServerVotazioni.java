@@ -118,7 +118,7 @@ public class ServerVotazioni implements Runnable {
                         	    for(int i=0;i<7;i++){
                         	        result = result + r.nextInt(options.length);
                         	    }
-                        	    System.out.println(result);
+                        	    //System.out.println(result);
                                 out.writeUTF(result);
                                 out.flush();
                                 break;

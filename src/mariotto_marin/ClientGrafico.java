@@ -21,6 +21,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.JTextPane;
 
 public class ClientGrafico {
 
@@ -33,22 +36,23 @@ public class ClientGrafico {
 				try {
 					ClientGrafico cg = new ClientGrafico("127.0.0.1", 50000);
 					cg.frame.setVisible(true);
-					//Thread t_cg = new Thread((Runnable) cg);
-					//t_cg.start();
+					// Thread t_cg = new Thread((Runnable) cg);
+					// t_cg.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
+
 	private JFrame frame;
 	private JComboBox comboBox;
+	private JTextPane textLog;
 	private Socket connessione;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private int npersona = 0;
-	
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -71,7 +75,7 @@ public class ClientGrafico {
 		frame.setVisible(true);
 		
 		comboBox = new JComboBox();
-		comboBox.setBounds(10, 194, 255, 31);
+		comboBox.setBounds(10, 162, 255, 31);
 		frame.getContentPane().add(comboBox);
 		try {
 			this.out.writeObject(Operazione.Operazione_t.Ricerca);
@@ -90,7 +94,7 @@ public class ClientGrafico {
 		
 		
 		JButton btnVota = new JButton("Vota");
-		btnVota.setBounds(92, 236, 89, 23);
+		btnVota.setBounds(90, 204, 89, 23);
 		btnVota.setVisible(true); 
 		frame.getContentPane().add(btnVota);
 		btnVota.addActionListener(new ActionListener() {
@@ -99,7 +103,7 @@ public class ClientGrafico {
 					out.writeObject(Operazione.Operazione_t.Vota);
 					int cvotato = comboBox.getSelectedIndex();
 					Candidato c = (Candidato) comboBox.getSelectedItem();
-					//System.out.println(c);
+					textLog.setText("Hai votato: "+c);
 					out.writeObject((Candidato) comboBox.getSelectedItem());
 					btnVota.setEnabled(false);
 				} catch (IOException ex) {
@@ -108,8 +112,8 @@ public class ClientGrafico {
 			}
 		});
 		
-		try {
-			String codice = "";
+		String codice = "";
+		try {	
 			this.out.writeObject(Operazione.Operazione_t.Codice);
 			this.out.writeObject(new Candidato(null, null, null, 0));
 			codice = this.in.readUTF(); 
@@ -124,33 +128,41 @@ public class ClientGrafico {
 		frame.getContentPane().add(lblTextCodiceUnivoco);
 
 		JLabel lblCodiceUnivoco = new JLabel("----");
-		lblCodiceUnivoco.setBounds(199, 97, 47, 14);
+		lblCodiceUnivoco.setText(codice);
+		lblCodiceUnivoco.setFont(new Font("Sitka Text", Font.BOLD, 14));
+		lblCodiceUnivoco.setBounds(170, 99, 116, 14);
 		frame.getContentPane().add(lblCodiceUnivoco);
 		
 		JLabel lblTempoVotazioni = new JLabel("--:--");
-		lblTempoVotazioni.setBounds(550, 34, 47, 14);
+		lblTempoVotazioni.setFont(new Font("Sitka Text", Font.BOLD, 14));
+		lblTempoVotazioni.setBounds(522, 35, 47, 14);
 		frame.getContentPane().add(lblTempoVotazioni);
 		
-		JLabel lblNewLabel = new JLabel("Tempo votazioni");
-		lblNewLabel.setFont(new Font("Sitka Text", Font.PLAIN, 12));
-		lblNewLabel.setBounds(510, 14, 106, 16);
+		JLabel lblNewLabel = new JLabel("Tempo rimanente");
+		lblNewLabel.setFont(new Font("Sitka Text", Font.PLAIN, 16));
+		lblNewLabel.setBounds(480, 14, 134, 21);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JButton btnMostraVotazioni = new JButton("Mostra votazioni");
-		btnMostraVotazioni.addActionListener(new ActionListener() {
+		JLabel lblScegliVota = new JLabel("Seleziona qui sotto il tuo candidato:");
+		lblScegliVota.setBackground(Color.BLACK);
+		lblScegliVota.setFont(new Font("Sitka Text", Font.BOLD, 14));
+		lblScegliVota.setBounds(12, 141, 252, 18);
+		frame.getContentPane().add(lblScegliVota);
+		
+		textLog = new JTextPane();
+		textLog.setEditable(false);
+		textLog.setBounds(14, 258, 256, 127);
+		frame.getContentPane().add(textLog);
+		
+		JButton btnStatoVotazioni = new JButton("Stato votazioni");
+		btnStatoVotazioni.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					connessione.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					
-					Socket con = new Socket("127.0.0.1",50000); 
-					out = new ObjectOutputStream(con.getOutputStream());
-					in = new ObjectInputStream(con.getInputStream());
-					out.flush();
+					Socket connessione = new Socket("127.0.0.1",50000); 
+					out = new ObjectOutputStream(connessione.getOutputStream());
+					in = new ObjectInputStream(connessione.getInputStream());
+					//out.flush();
 					out.writeObject(Operazione.Operazione_t.Ricerca);
 					out.writeObject(new Candidato(null, null, null, 0));
 					Object o = in.readObject();
@@ -161,22 +173,21 @@ public class ClientGrafico {
 					Iterator<Candidato> it = res.getPersone().iterator();
 					while (it.hasNext()) {
 						Candidato persona = it.next();
-						System.out.println(persona.toStringVotazioni());
+						textLog.setText(persona.toStringVotazioni());
 					}
-					System.out.println(res.vittoria());
-					btnMostraVotazioni.setEnabled(false);
 				} catch (IOException | ClassNotFoundException exc) {
 					exc.printStackTrace();
 				}
 			}
 		});
-		btnMostraVotazioni.setBounds(10, 326, 109, 23);
-		frame.getContentPane().add(btnMostraVotazioni);
+		btnStatoVotazioni.setBounds(290, 365, 101, 23);
+		frame.getContentPane().add(btnStatoVotazioni);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon(ClientGrafico.class.getResource("/mariotto_marin/Zaiastan.jpg")));
-		lblNewLabel_1.setBounds(0, 0, 638, 406);
-		frame.getContentPane().add(lblNewLabel_1);
+		JLabel lblSfondo = new JLabel("");
+		lblSfondo.setIcon(new ImageIcon(ClientGrafico.class.getResource("/mariotto_marin/Zaiastan.jpg")));
+		lblSfondo.setBounds(0, 0, 638, 406);
+		frame.getContentPane().add(lblSfondo);
+		
 	}
 }
 
