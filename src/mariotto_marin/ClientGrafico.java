@@ -137,7 +137,7 @@ public class ClientGrafico {
 				}
 				try {
 					
-					Socket con = new Socket("127.0.0.1",5000); 
+					Socket con = new Socket("127.0.0.1",50000); 
 					out = new ObjectOutputStream(con.getOutputStream());
 					in = new ObjectInputStream(con.getInputStream());
 					out.flush();
@@ -151,8 +151,9 @@ public class ClientGrafico {
 					Iterator<Candidato> it = res.getPersone().iterator();
 					while (it.hasNext()) {
 						Candidato persona = it.next();
-						System.out.println(persona.toString());
+						System.out.println(persona.toStringVotazioni());
 					}
+					System.out.println(res.vittoria());
 					btnMostraVotazioni.setEnabled(false);
 				} catch (IOException | ClassNotFoundException exc) {
 					exc.printStackTrace();

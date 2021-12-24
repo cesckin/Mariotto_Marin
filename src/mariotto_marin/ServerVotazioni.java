@@ -42,7 +42,7 @@ public class ServerVotazioni implements Runnable {
     public ServerVotazioni(int port) throws IOException {
         this.listacandidati = new ListaCandidati();
         
-//        this.port = port;
+        //this.port = port;
         this.server = new ServerSocket(port);
         this.t_continue = true;
         Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Nordista", 0);
@@ -78,7 +78,7 @@ public class ServerVotazioni implements Runnable {
                         switch (op) {
                             case Vota:
                             	//this.listacandidati.ricerca(c1);
-                            	System.out.println("ciao");
+                            	//System.out.println("ciao");
                     	    	//Scanner scanner = new Scanner(System.in);
                     	        //int cvotato = scanner.nextInt();
                             	//ArrayList<Candidato> candidati = this.listacandidati.getPersone();   
@@ -96,7 +96,7 @@ public class ServerVotazioni implements Runnable {
                                 	listacandidati.getPersone().get(3).addVoto();
                                 if(a.getNome().equals(listacandidati.getPersone().get(4).getNome()))
                                 	listacandidati.getPersone().get(4).addVoto();
-                                System.out.println(a); 	
+                               // System.out.println(a); 	
                                
                                 //out.writeObject(Operazione.Operazione_t.Op_ACK);
                                 break;
@@ -106,7 +106,7 @@ public class ServerVotazioni implements Runnable {
                                 break;
                             case Ricerca:
                             	out.flush();
-                            	System.out.println(listacandidati);
+                            	//System.out.println(listacandidati);
                             	//listacandidati.getPersone().get(1).setVoti(1000);
                                 out.writeObject(listacandidati);
                                 out.flush();
