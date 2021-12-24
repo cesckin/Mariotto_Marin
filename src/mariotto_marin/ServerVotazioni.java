@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerVotazioni implements Runnable {
 	Thread_Countdown tempo = new Thread_Countdown();
@@ -37,9 +39,12 @@ public class ServerVotazioni implements Runnable {
     //    private final int port;
     private ServerSocket server;
     private volatile boolean t_continue;
-
+    private int tempoPerVotare=20000;
+    private int tempoRestante=0;
 
     public ServerVotazioni(int port) throws IOException {
+    	this.tempoPerVotare=tempoPerVotare;
+    	this.tempoRestante=tempoRestante;
         this.listacandidati = new ListaCandidati();
         
         //this.port = port;
@@ -56,9 +61,37 @@ public class ServerVotazioni implements Runnable {
         Candidato c5=new Candidato("Ruota", "Scorto", "Partito Moderato", 0);
         listacandidati.add(c5);
     }
-
+	public void setTempoPerVotare(int tempoPerVotare) {
+		this.tempoPerVotare = tempoPerVotare;
+	}
+	public void setTempoRestante(int tempoRestante) {
+		this.tempoRestante = tempoRestante;
+	}
+	public int getTempoRestante() {
+		return tempoRestante;
+	}
+    
     @Override
     public void run() {
+    	
+    	class Helper extends TimerTask{
+    		int tempor=tempoPerVotare/1000;
+		    public int i = 0;
+		    public void run()
+		    {
+		    	if(i<=tempor) {
+		    		setTempoRestante(tempor-i);
+		    		i++;
+		    	}else {
+		    		
+		    	}
+		    }
+		}
+		
+		Timer timer = new Timer();
+		TimerTask task = new Helper();
+		timer.schedule(task, 0, 1000);
+    	
     	while(!tempo.getTemposcaduto()) {
         try {
             Socket connessione = this.server.accept();
@@ -103,6 +136,8 @@ public class ServerVotazioni implements Runnable {
                             case Inserisci:
                             	//this.rubrica.elimina((Persona) o);
                             	//out.writeObject(Operazione.Operazione_t.Op_ACK);
+                            	out.writeInt(getTempoRestante());
+                            	out.flush();
                                 break;
                             case Ricerca:
                             	out.flush();

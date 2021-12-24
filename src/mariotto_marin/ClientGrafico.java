@@ -194,8 +194,17 @@ public class ClientGrafico {
 		});
 		btnStatoVotazioni.setBounds(383, 281, 123, 23);
 		frame.getContentPane().add(btnStatoVotazioni);
-
-		int serverTime = 10;
+        
+        int time=0;
+        try {
+            this.out.writeObject(Operazione.Operazione_t.Inserisci);
+            this.out.writeObject(new Candidato(null, null, null, 0));
+            time = this.in.readInt(); 
+        } catch (IOException exce) {
+            exce.printStackTrace();
+        }
+        
+        int serverTime = time;
 		
 		class Helper extends TimerTask{
 		    public int i = 0;
