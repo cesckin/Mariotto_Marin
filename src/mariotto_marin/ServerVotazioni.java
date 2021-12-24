@@ -85,7 +85,7 @@ public class ServerVotazioni implements Runnable {
                             	//Candidato c = null;
                                 Candidato a = ((Candidato) o);
                                 if(a.getNome().equals(listacandidati.getPersone().get(0).getNome())) {
-                                	System.out.println(listacandidati.getPersone().get(0));
+                                	//System.out.println(listacandidati.getPersone().get(0));
                                 	listacandidati.getPersone().get(0).addVoto();
                                 }
                                 if(a.getNome().equals(listacandidati.getPersone().get(1).getNome()))
@@ -118,7 +118,7 @@ public class ServerVotazioni implements Runnable {
                         	    for(int i=0;i<result.length;i++){
                         	        result[i]=options[r.nextInt(options.length)];
                         	    }
-                        	    //System.out.println(result);
+                        	    System.out.println(result);
                                 out.writeObject(result);
                                 out.flush();
                                 break;

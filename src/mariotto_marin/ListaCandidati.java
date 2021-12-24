@@ -54,12 +54,13 @@ public class ListaCandidati implements Serializable {
 		String nome = null;
 		while (it.hasNext()) {
 			Candidato persona = it.next();
-			if(persona.getVoti()>voti) {
+			if (persona.getVoti() > voti) {
 				voti = persona.getVoti();
-				nome = persona.getNome() + " " + persona.getCognome() + " | " + persona.getPartito();
+				nome = "Ha vinto le elezioni: " + persona.getNome() + " " + persona.getCognome() + " del "
+						+ persona.getPartito() + " con " + voti + " voti";
 			}
 		}
-		return voti + " " + nome;
+		return nome;
 
 	}
 
