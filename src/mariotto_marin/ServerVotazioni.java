@@ -16,7 +16,7 @@ public class ServerVotazioni implements Runnable {
     public static void main(String[] args) {
         try {
         	
-            ServerVotazioni sr = new ServerVotazioni(5000);
+            ServerVotazioni sr = new ServerVotazioni(50000);
             Scanner kbReader = new Scanner(System.in);
 
             Thread t_sr = new Thread(sr);
@@ -78,7 +78,7 @@ public class ServerVotazioni implements Runnable {
                         switch (op) {
                             case Vota:
                             	//this.listacandidati.ricerca(c1);
-                            	//System.out.println("ciao");
+                            	System.out.println("ciao");
                     	    	//Scanner scanner = new Scanner(System.in);
                     	        //int cvotato = scanner.nextInt();
                             	//ArrayList<Candidato> candidati = this.listacandidati.getPersone();   
@@ -96,7 +96,7 @@ public class ServerVotazioni implements Runnable {
                                 	listacandidati.getPersone().get(3).addVoto();
                                 if(a.getNome().equals(listacandidati.getPersone().get(4).getNome()))
                                 	listacandidati.getPersone().get(4).addVoto();
-                                //System.out.println(a); 	
+                                System.out.println(a); 	
                                
                                 //out.writeObject(Operazione.Operazione_t.Op_ACK);
                                 break;
@@ -106,13 +106,12 @@ public class ServerVotazioni implements Runnable {
                                 break;
                             case Ricerca:
                             	out.flush();
-                            	//System.out.println(listacandidati);
+                            	System.out.println(listacandidati);
                             	//listacandidati.getPersone().get(1).setVoti(1000);
-                                out.writeObject(listacandidati.getPersone());
+                                out.writeObject(listacandidati);
                                 out.flush();
                                 break;
-                            case Codice:
-                            	/*
+                            case Codice:	
                             	char[] options = {'Z','A','I','A','D','O','G','E','1','2','3','4'};
                         	    char[] result =  new char[7];
                         	    Random r = new Random();
@@ -122,7 +121,6 @@ public class ServerVotazioni implements Runnable {
                         	    //System.out.println(result);
                                 out.writeObject(result);
                                 out.flush();
-                                */
                                 break;
                         }
                     } else {

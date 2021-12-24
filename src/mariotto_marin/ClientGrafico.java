@@ -31,7 +31,7 @@ public class ClientGrafico {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ClientGrafico cg = new ClientGrafico("127.0.0.1", 5000);
+					ClientGrafico cg = new ClientGrafico("127.0.0.1", 50000);
 					cg.frame.setVisible(true);
 					//Thread t_cg = new Thread((Runnable) cg);
 					//t_cg.start();
@@ -47,6 +47,7 @@ public class ClientGrafico {
 	private Socket connessione;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
+	private int npersona = 0;
 	
 	/**
 	 * @wbp.parser.entryPoint
