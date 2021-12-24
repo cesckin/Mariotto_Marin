@@ -20,6 +20,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class ClientGrafico {
 
@@ -41,13 +42,11 @@ public class ClientGrafico {
 		});
 	}
 	
-	private RisultatiGrafico rg;
 	private JFrame frame;
 	private JComboBox comboBox;
 	private Socket connessione;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private int npersona = 0;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -65,13 +64,13 @@ public class ClientGrafico {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setBounds(100, 100, 307, 397);
+		frame.setBounds(100, 100, 652, 443);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 
 		comboBox = new JComboBox();
-		comboBox.setBounds(10, 59, 273, 107);
+		comboBox.setBounds(10, 194, 255, 31);
 		frame.getContentPane().add(comboBox);
 		try {
 			this.out.writeObject(Operazione.Operazione_t.Ricerca);
@@ -80,6 +79,7 @@ public class ClientGrafico {
 			Iterator<Candidato> it = res.getPersone().iterator();
 			while (it.hasNext()) {
 				Candidato persona = it.next();
+				//comboBox.addItem(persona.getCognome()+" "+persona.getNome()+" | "+persona.getPartito());
 				comboBox.addItem(persona);
 			}
 			
@@ -89,8 +89,8 @@ public class ClientGrafico {
 		
 		
 		JButton btnVota = new JButton("Vota");
-		btnVota.setBounds(94, 191, 89, 23);
-		btnVota.setVisible(true); //il marinozzo risolvò
+		btnVota.setBounds(92, 236, 89, 23);
+		btnVota.setVisible(true); 
 		frame.getContentPane().add(btnVota);
 		btnVota.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,25 +107,22 @@ public class ClientGrafico {
 			}
 		});
 
-		JLabel lblBenvenuto = new JLabel("Benvenuto elettore!");
-		lblBenvenuto.setFont(new Font("Source Code Pro Medium", Font.BOLD, 14));
-		lblBenvenuto.setBounds(10, 11, 171, 18);
-		frame.getContentPane().add(lblBenvenuto);
-
 		JLabel lblTextCodiceUnivoco = new JLabel("Il suo codice univoco:");
-		lblTextCodiceUnivoco.setBounds(10, 34, 130, 14);
+		lblTextCodiceUnivoco.setFont(new Font("Sitka Text", Font.PLAIN, 15));
+		lblTextCodiceUnivoco.setBounds(13, 96, 177, 20);
 		frame.getContentPane().add(lblTextCodiceUnivoco);
 
 		JLabel lblCodiceUnivoco = new JLabel("----");
-		lblCodiceUnivoco.setBounds(146, 34, 47, 14);
+		lblCodiceUnivoco.setBounds(199, 97, 47, 14);
 		frame.getContentPane().add(lblCodiceUnivoco);
 		
 		JLabel lblTempoVotazioni = new JLabel("--:--");
-		lblTempoVotazioni.setBounds(225, 34, 47, 14);
+		lblTempoVotazioni.setBounds(550, 34, 47, 14);
 		frame.getContentPane().add(lblTempoVotazioni);
 		
 		JLabel lblNewLabel = new JLabel("Tempo votazioni");
-		lblNewLabel.setBounds(201, 14, 92, 14);
+		lblNewLabel.setFont(new Font("Sitka Text", Font.PLAIN, 12));
+		lblNewLabel.setBounds(510, 14, 106, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnMostraVotazioni = new JButton("Mostra votazioni");
@@ -146,14 +143,14 @@ public class ClientGrafico {
 					out.writeObject(Operazione.Operazione_t.Ricerca);
 					out.writeObject(new Candidato(null, null, null, 0));
 					Object o = in.readObject();
-					System.out.println(o instanceof ListaCandidati);
+					//System.out.println(o instanceof ListaCandidati);
 					ListaCandidati res = (ListaCandidati) o;
-					System.out.println(res);
-					System.out.print(res.getPersone().get(0).getVoti());
+					//System.out.println(res);
+					//System.out.print(res.getPersone().get(0).getVoti());
 					Iterator<Candidato> it = res.getPersone().iterator();
 					while (it.hasNext()) {
 						Candidato persona = it.next();
-						System.out.println(persona.toStringVotazioni());
+						System.out.println(persona.toString());
 					}
 					btnMostraVotazioni.setEnabled(false);
 				} catch (IOException | ClassNotFoundException exc) {
@@ -163,6 +160,11 @@ public class ClientGrafico {
 		});
 		btnMostraVotazioni.setBounds(10, 326, 109, 23);
 		frame.getContentPane().add(btnMostraVotazioni);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setIcon(new ImageIcon(ClientGrafico.class.getResource("/mariotto_marin/Zaiastan.jpg")));
+		lblNewLabel_1.setBounds(0, 0, 638, 406);
+		frame.getContentPane().add(lblNewLabel_1);
 	}
 }
 

@@ -8,8 +8,9 @@ public class Operazione implements Serializable {
         Vota,
         Inserisci,
         Ricerca,
+        Codice,
         Op_ACK,
-        Op_NACK
+        Op_NACK, 
     }
 	
 	/*private Operazione_t op;

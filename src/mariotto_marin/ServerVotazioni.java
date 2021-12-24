@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ServerVotazioni implements Runnable {
@@ -44,7 +45,7 @@ public class ServerVotazioni implements Runnable {
 //        this.port = port;
         this.server = new ServerSocket(port);
         this.t_continue = true;
-        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Comunista", 0);
+        Candidato c1=new Candidato("Mariotto", "Francesco", "Partito Nordista", 0);
         listacandidati.add(c1);
         Candidato c2=new Candidato("Davide", "Bortuo", "Partito Fascista", 0);
         listacandidati.add(c2);
@@ -77,7 +78,7 @@ public class ServerVotazioni implements Runnable {
                         switch (op) {
                             case Vota:
                             	//this.listacandidati.ricerca(c1);
-                            	System.out.println("ciao");
+                            	//System.out.println("ciao");
                     	    	//Scanner scanner = new Scanner(System.in);
                     	        //int cvotato = scanner.nextInt();
                             	//ArrayList<Candidato> candidati = this.listacandidati.getPersone();   
@@ -95,7 +96,7 @@ public class ServerVotazioni implements Runnable {
                                 	listacandidati.getPersone().get(3).addVoto();
                                 if(a.getNome().equals(listacandidati.getPersone().get(4).getNome()))
                                 	listacandidati.getPersone().get(4).addVoto();
-                               System.out.println(a); 	
+                                //System.out.println(a); 	
                                
                                 //out.writeObject(Operazione.Operazione_t.Op_ACK);
                                 break;
@@ -105,10 +106,23 @@ public class ServerVotazioni implements Runnable {
                                 break;
                             case Ricerca:
                             	out.flush();
-                            	System.out.println(listacandidati);
+                            	//System.out.println(listacandidati);
                             	//listacandidati.getPersone().get(1).setVoti(1000);
-                                out.writeObject(listacandidati);
+                                out.writeObject(listacandidati.getPersone());
                                 out.flush();
+                                break;
+                            case Codice:
+                            	/*
+                            	char[] options = {'Z','A','I','A','D','O','G','E','1','2','3','4'};
+                        	    char[] result =  new char[7];
+                        	    Random r = new Random();
+                        	    for(int i=0;i<result.length;i++){
+                        	        result[i]=options[r.nextInt(options.length)];
+                        	    }
+                        	    //System.out.println(result);
+                                out.writeObject(result);
+                                out.flush();
+                                */
                                 break;
                         }
                     } else {
