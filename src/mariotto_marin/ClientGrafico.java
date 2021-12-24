@@ -69,16 +69,7 @@ public class ClientGrafico {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
-		/*
-		try {
-			int codice = 0;
-			this.out.writeObject(Operazione.Operazione_t.Codice);
-			//this.in.readObject();
-			System.out.println(codice);
-		} catch (IOException exce) {
-			exce.printStackTrace();
-		}
-		*/
+		
 		comboBox = new JComboBox();
 		comboBox.setBounds(10, 194, 255, 31);
 		frame.getContentPane().add(comboBox);
@@ -116,6 +107,16 @@ public class ClientGrafico {
 				}
 			}
 		});
+		
+		try {
+			String codice = "";
+			this.out.writeObject(Operazione.Operazione_t.Codice);
+			this.out.writeObject(new Candidato(null, null, null, 0));
+			codice = this.in.readUTF(); 
+			System.out.println(codice);
+		} catch (IOException exce) {
+			exce.printStackTrace();
+		}
 
 		JLabel lblTextCodiceUnivoco = new JLabel("Il suo codice univoco:");
 		lblTextCodiceUnivoco.setFont(new Font("Sitka Text", Font.PLAIN, 15));

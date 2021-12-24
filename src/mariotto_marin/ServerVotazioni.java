@@ -113,13 +113,13 @@ public class ServerVotazioni implements Runnable {
                                 break;
                             case Codice:	
                             	char[] options = {'Z','A','I','A','D','O','G','E','1','2','3','4'};
-                        	    char[] result =  new char[7];
+                        	    String result = "";
                         	    Random r = new Random();
-                        	    for(int i=0;i<result.length;i++){
-                        	        result[i]=options[r.nextInt(options.length)];
+                        	    for(int i=0;i<7;i++){
+                        	        result = result + r.nextInt(options.length);
                         	    }
                         	    System.out.println(result);
-                                out.writeObject(result);
+                                out.writeUTF(result);
                                 out.flush();
                                 break;
                         }
